@@ -1,0 +1,15 @@
+
+html, body{
+    width: 100%;
+    height: 100%;
+    margin:0px;
+    color: aqua;
+    background-color:aqua;
+    
+}
+
+#board{
+    border-radius: 2%;
+    border: 2px solid black;
+    background-color: #fff;
+}

@@ -1,0 +1,55 @@
+<head>
+    <meta charset="utf-8">
+    <title>Dynamic Drawing Board</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen">
+    <link href="client\style.css" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    
+
+</head>
+
+
+
+<body>
+   <canvas id="board" width="800" height="600"></canvas>
+</body>
+
+<script>
+   
+    var board = document.getElementById('board');
+    var ctx = board.getContext('2d');
+    
+    var lastX;
+    var lastY;
+    var draw = false;
+    
+    document.addEventListener('click', function(e){
+        draw = !draw;
+        if(!draw){
+            lastX = null;
+            lastY = null;
+        }
+    });
+    
+    document.addEventListener('mousemove', function(e){
+        if(!lastX){
+            lastX = e.clientX;
+            lastY = e.clientY;
+        }else if(draw){
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.clientX, e.clientY);
+            ctx.stroke();
+            lastX = e.clientX;
+            lastY = e.clientY;
+        }
+    });
+    
+  
+    
+
+   
+       
+        
+</script> 
