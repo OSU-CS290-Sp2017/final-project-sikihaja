@@ -5,11 +5,33 @@ html, body{
     margin:0px;
     color: aqua;
     background-color:aqua;
-    
+
 }
 
 #board{
     border-radius: 2%;
     border: 2px solid black;
     background-color: #fff;
+    display: flex;
+}
+
+.site-title{
+  font-size: 24px;
+  padding: 10px 20px;
+  color: black;
+
+}
+
+.thicc-bar{
+  display: inline-block;
+}
+
+.Thicc-text{
+  font-size: 18px;
+  color: black;
+}
+
+#thicc-button{
+  width: 18px;
+  height: 18px;
 }
