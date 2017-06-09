@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
-var port = 80;
+var port = 149;
 var io = require('socket.io')(serv, {});
 var deltaT = 1000/40;
 
