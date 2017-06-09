@@ -15,6 +15,10 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
 });
 
+app.get('/index.js', function(req, res){
+    res.sendFile(__dirname + '/client/index.js');
+});
+
 
 
 var SOCKET_LIST = {};
