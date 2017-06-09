@@ -17,7 +17,8 @@ document.addEventListener('mousemove', function(e){
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
         ctx.lineTo(e.clientX, e.clientY);
-        ctx.strokeStlye = '#ff0000';
+        ctx.strokeStyle = '#ff0000';
+        ctx.lineWidth = 7;
         ctx.stroke();
 
         lastX = e.clientX;
