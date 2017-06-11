@@ -4,29 +4,25 @@ var lastX;
 var lastY;
 var draw = false;
 var socket = io();
+var timeStamp = 0;
 
 document.addEventListener('click', function(e){
     draw = !draw;
 });
 
 document.addEventListener('mousemove', function(e){
+    var rect = board.getBoundingClientRect();
+
     if(!draw){
         lastX = e.clientX;
         lastY = e.clientY;
     }
     if(draw){
-        
-        /*ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(e.clientX, e.clientY);
-        ctx.strokeStlye = '#ff0000';
-        ctx.stroke();*/
-        
         var pack = {
-            xInitial: lastX,
-            yInitial: lastY,
-            xFinal: e.clientX,
-            yFinal: e.clientY,
+            xInitial: lastX - rect.left,
+            yInitial: lastY - rect.top,
+            xFinal: e.clientX - rect.left,
+            yFinal: e.clientY - rect.top,
         }
         socket.emit('lineUpdate', pack);
 
@@ -38,9 +34,8 @@ document.addEventListener('mousemove', function(e){
 
 
 socket.on('generalUpdate', function(lines){
-    var counter = 0;
+    
     for(var i in lines){
-        counter++;
         var line = lines[i];
         
         ctx.beginPath();
@@ -49,6 +44,5 @@ socket.on('generalUpdate', function(lines){
         ctx.lineTo(lines[i].xFinal, lines[i].yFinal);
         ctx.stroke();
     }
-    console.log(counter + " lines.");
 });
 
