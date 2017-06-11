@@ -4,8 +4,15 @@ var serv = require('http').Server(app);
 var port = 149;
 var io = require('socket.io')(serv, {});
 var deltaT = 1000/40;
+var timeStamp = 0;
 
-var lineSegment = function(xi, yi, xf, yf, c, ID){
+var curve = function(timeOfCreation, color, opacity){
+    var self = {
+        
+    }
+}
+
+var lineSegment = function(xi, yi, xf, yf, c, ID, t){
     var self = {
         xInitial: xi,
         yInitial: yi,
@@ -13,9 +20,9 @@ var lineSegment = function(xi, yi, xf, yf, c, ID){
         yFinal: yf,
         color: c,
         id: ID,
+        time: t,
     }
     return self;
-    
 }
 
 app.use('/client', express.static(__dirname + '/client'));
@@ -40,6 +47,7 @@ var LINE_SEGMENT_LIST = {};
 io.sockets.on('connection', function(socket){
 
     socket.id = Math.floor(Math.random()*100000);
+    
     console.log("Connection from " + socket.id + ".");
     
     var hexColor = "#" + Math.floor(Math.random()*16777215).toString(16);
