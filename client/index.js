@@ -1,5 +1,6 @@
 var board = document.getElementById('board');
 var ctx = board.getContext('2d');
+var button = document.getElementById('thicc-button');
 var lastX;
 var lastY;
 var draw = false;
@@ -51,17 +52,20 @@ board.addEventListener('mousemove', function(e){
 
 });
 
+button.addEventListener('click', function(){
+  ctx.lineWidth =
+})
 
 socket.on('generalUpdate', function(curveList){
     var bigOh = 0;
-    
+
     var largestTimeStamp = 0;
     for(var i in curveList){
         var curve = curveList[i];
         if(curve.timeOfCreation > largestTimeStamp){
-            largestTimeStamp = curve.timeOfCreation;    
+            largestTimeStamp = curve.timeOfCreation;
         }
-        if(curve.timeOfCreation > timeStamp){            
+        if(curve.timeOfCreation > timeStamp){
             bigOh++;
             for(var j in curve.lineSegmentList){
                 var lineSegment = curve.lineSegmentList[j];
