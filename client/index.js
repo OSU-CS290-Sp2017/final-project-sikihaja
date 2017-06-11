@@ -5,17 +5,19 @@ var lastY;
 var draw = false;
 var socket = io();
 var timeStamp = 0;
+var newUpdate = false;
+var CURVE = {};
+
 
 board.addEventListener('mousedown', function(e){
-	console.log("mouse has been clicked on the board");
+    recordSegments = true;
     draw = true;
 });
 board.addEventListener('mouseup', function(e){
-	console.log("mouse has been unclicked on the board");
+    newUpdate = true;
 	draw = false;
 });
 board.addEventListener('mouseleave', function(e){
-	console.log("mouse has left the board");
 	draw = false;
 });
 
@@ -34,25 +36,43 @@ board.addEventListener('mousemove', function(e){
             yInitial: lastY - rect.top,
             xFinal: e.clientX - rect.left,
             yFinal: e.clientY - rect.top,
+            ID: Math.floor(Math.random()*100000),
         }
-        socket.emit('lineUpdate', pack);
+        CURVE[pack.ID] = pack;
 
         lastX = e.clientX;
         lastY = e.clientY;
+    }
+    if(newUpdate){
+        socket.emit('curveUpdate', CURVE);
+        CURVE = {};
+        newUpdate = false;
     }
 
 });
 
 
-socket.on('generalUpdate', function(lines){
+socket.on('generalUpdate', function(curveList){
+    var bigOh = 0;
     
-    for(var i in lines){
-        var line = lines[i];
-        
-        ctx.beginPath();
-        ctx.strokeStyle = lines[i].color;
-        ctx.moveTo(lines[i].xInitial, lines[i].yInitial);
-        ctx.lineTo(lines[i].xFinal, lines[i].yFinal);
-        ctx.stroke();
+    var largestTimeStamp = 0;
+    for(var i in curveList){
+        var curve = curveList[i];
+        if(curve.timeOfCreation > largestTimeStamp){
+            largestTimeStamp = curve.timeOfCreation;    
+        }
+        if(curve.timeOfCreation > timeStamp){            
+            bigOh++;
+            for(var j in curve.lineSegmentList){
+                var lineSegment = curve.lineSegmentList[j];
+                ctx.beginPath();
+                ctx.strokeStyle = lineSegment.color;
+                ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
+                ctx.lineTo(lineSegment.xFinal, lineSegment.yFinal);
+                ctx.stroke();
+            }
+        }
     }
+    console.log("Updates to draw: " + bigOh );
+    timeStamp = largestTimeStamp;
 });

@@ -6,10 +6,13 @@ var io = require('socket.io')(serv, {});
 var deltaT = 1000/40;
 var timeStamp = 0;
 
-var curve = function(timeOfCreation, color, opacity){
+var curve = function(time, color, lines){
     var self = {
-        
+        timeOfCreation: time,
+        lineSegmentList: lines,
+        color: color,
     }
+    return self;
 }
 
 var lineSegment = function(xi, yi, xf, yf, c, ID, t){
@@ -44,6 +47,9 @@ var SOCKET_LIST = {};
 
 var LINE_SEGMENT_LIST = {};
 
+var CURVE_LIST = {};
+
+
 io.sockets.on('connection', function(socket){
 
     socket.id = Math.floor(Math.random()*100000);
@@ -54,13 +60,13 @@ io.sockets.on('connection', function(socket){
     
     SOCKET_LIST[socket.id] = socket;
     
-    socket.on('lineUpdate', function(data){
+    socket.on('curveUpdate', function(data){
         
         var id = Math.floor(Math.random()*1000000);
         
-        line = lineSegment(data.xInitial, data.yInitial, data.xFinal, data.yFinal, hexColor, id);
+        var c = curve(timeStamp, hexColor, data);
         
-        LINE_SEGMENT_LIST[id] = line;
+        CURVE_LIST[id] = c;
         
     });
     
@@ -69,9 +75,12 @@ io.sockets.on('connection', function(socket){
 });
 
 setInterval(function(socket){
+    
+    timeStamp++;
+    
     for(var i in SOCKET_LIST){
         var socket = SOCKET_LIST[i];
-        socket.emit('generalUpdate', LINE_SEGMENT_LIST);
+        socket.emit('generalUpdate', CURVE_LIST);
     }
  }, deltaT);
 
