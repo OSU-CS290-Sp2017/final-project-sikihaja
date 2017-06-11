@@ -39,6 +39,13 @@ board.addEventListener('mousemove', function(e){
             yFinal: e.clientY - rect.top,
             ID: Math.floor(Math.random()*100000),
         }
+        
+        ctx.beginPath();
+        ctx.strokeStyle = "gray";
+        ctx.moveTo(lastX - rect.left, lastY - rect.top);
+        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.stroke();
+        
         CURVE[pack.ID] = pack;
 
         lastX = e.clientX;

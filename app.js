@@ -6,27 +6,20 @@ var io = require('socket.io')(serv, {});
 var deltaT = 1000/40;
 var timeStamp = 0;
 
-var curve = function(time, color, lines){
+var SOCKET_LIST = {};
+
+var CURVE_LIST = {};
+
+var curve = function(time, c, lines){
     var self = {
         timeOfCreation: time,
         lineSegmentList: lines,
-        color: color,
+        color: c,
     }
     return self;
 }
 
-var lineSegment = function(xi, yi, xf, yf, c, ID, t){
-    var self = {
-        xInitial: xi,
-        yInitial: yi,
-        xFinal: xf,
-        yFinal: yf,
-        color: c,
-        id: ID,
-        time: t,
-    }
-    return self;
-}
+
 
 app.use('/client', express.static(__dirname + '/client'));
 
@@ -43,22 +36,19 @@ app.get('/index.js', function(req, res){
 });
 
 
-var SOCKET_LIST = {};
 
-var LINE_SEGMENT_LIST = {};
-
-var CURVE_LIST = {};
-
-
-io.sockets.on('connection', function(socket){
+io.sockets.on('connection', function(socket){ 
 
     socket.id = Math.floor(Math.random()*100000);
-    
+    SOCKET_LIST[socket.id] = socket;
+
+    var hexColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+    socket.emit('connectionResponse', hexColor);
+
     console.log("Connection from " + socket.id + ".");
     
-    var hexColor = "#" + Math.floor(Math.random()*16777215).toString(16);
     
-    SOCKET_LIST[socket.id] = socket;
+    
     
     socket.on('curveUpdate', function(data){
         
@@ -70,15 +60,14 @@ io.sockets.on('connection', function(socket){
         
     });
     
-    //Hex color selection
     
 });
 
-setInterval(function(socket){
+setInterval(function(socket){ // This is a function that is called every 'tick' (currently 40x per second)
     
-    timeStamp++;
+    timeStamp++; //This is a timestamp that records the amount of ticks since the server was started.
     
-    for(var i in SOCKET_LIST){
+    for(var i in SOCKET_LIST){ //Send the list of curves to everybody currently connected.
         var socket = SOCKET_LIST[i];
         socket.emit('generalUpdate', CURVE_LIST);
     }
