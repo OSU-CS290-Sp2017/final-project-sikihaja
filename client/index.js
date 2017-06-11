@@ -70,18 +70,14 @@ button.addEventListener('click', function(){
     min = Math.ceil(1);
     max = Math.floor(7);
     testWidth = Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log(testWidth);
     if (oldWidths.length > 3) {
       oldWidths.shift();
     }for (var i = 0; i < oldWidths.length; i++) {
-      console.log("Old width:", i, oldWidths[i]);
       if(testWidth == oldWidths[i]){
-        console.log("They are the same");
         repeated = true;
       }
     }
   } while (repeated == true);
-  console.log("out of loop");
   oldWidths.push(testWidth);
   ctx.lineWidth = testWidth;
 });
