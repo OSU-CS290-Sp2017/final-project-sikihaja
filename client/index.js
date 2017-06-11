@@ -1,6 +1,5 @@
 var board = document.getElementById('board');
 var ctx = board.getContext('2d');
-var button = document.getElementById('thicc-button');
 var lastX;
 var lastY;
 var draw = false;
@@ -51,10 +50,6 @@ board.addEventListener('mousemove', function(e){
     }
 
 });
-
-button.addEventListener('click', function(){
-  ctx.lineWidth =
-})
 
 socket.on('generalUpdate', function(curveList){
     var bigOh = 0;
