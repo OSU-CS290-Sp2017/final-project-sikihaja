@@ -25,7 +25,6 @@ board.addEventListener('mouseleave', function(e){
 
 board.addEventListener('mousemove', function(e){
     var rect = board.getBoundingClientRect();
-
     if(!draw){
         lastX = e.clientX;
         lastY = e.clientY;
@@ -38,6 +37,13 @@ board.addEventListener('mousemove', function(e){
             yFinal: e.clientY - rect.top,
             ID: Math.floor(Math.random()*100000),
         }
+        
+        ctx.beginPath();
+        ctx.strokeStyle = "gray";
+        ctx.moveTo(lastX - rect.left, lastY - rect.top);
+        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.stroke();
+        
         CURVE[pack.ID] = pack;
 
         lastX = e.clientX;
@@ -53,16 +59,14 @@ board.addEventListener('mousemove', function(e){
 
 
 socket.on('generalUpdate', function(curveList){
-    var bigOh = 0;
     
     var largestTimeStamp = 0;
     for(var i in curveList){
         var curve = curveList[i];
-        if(curve.timeOfCreation > largestTimeStamp){
+        if(curve.timeOfCreation > largestTimeStamp){ //Keep track of the most recently created curve so we can update the client's timestamp
             largestTimeStamp = curve.timeOfCreation;    
         }
         if(curve.timeOfCreation > timeStamp){            
-            bigOh++;
             for(var j in curve.lineSegmentList){
                 var lineSegment = curve.lineSegmentList[j];
                 ctx.beginPath();
@@ -73,6 +77,5 @@ socket.on('generalUpdate', function(curveList){
             }
         }
     }
-    console.log("Updates to draw: " + bigOh );
     timeStamp = largestTimeStamp;
 });
