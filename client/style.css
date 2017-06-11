@@ -10,6 +10,14 @@ li{
   display: inline-block;
 }
 
+a{
+  color: inherit;
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: underline;
+}
+
 #board{
     border-radius: 2%;
     border: 2px solid black;
@@ -30,8 +38,10 @@ li{
 }
 
 #thicc-bar{
-  display: inline-block;
+  display: block;
   padding: 5px;
+  font-family: inconsolata;
+  text-align: center;
 }
 
 #Thicc-text{
@@ -42,6 +52,7 @@ li{
 #thicc-button{
   width: 80px;
   height: 50px;
+  font-family: inconsolata;
 }
 
 #foot{
