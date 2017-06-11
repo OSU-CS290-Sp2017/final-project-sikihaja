@@ -7,6 +7,8 @@ var draw = false;
 var socket = io();
 var timeStamp = 0;
 var newUpdate = false;
+var myColor;
+
 var CURVE = {};
 
 
@@ -56,7 +58,6 @@ board.addEventListener('mousemove', function(e){
         CURVE = {};
         newUpdate = false;
     }
-
 });
 
 button.addEventListener('click', function(){
@@ -64,11 +65,10 @@ button.addEventListener('click', function(){
   max = Math.floor(7);
   ctx.lineWidth = Math.floor(Math.random() * (max - min + 1)) + min;
   console.log(ctx.lineWidth);
-})
+});
+
 
 socket.on('generalUpdate', function(curveList){
-    var bigOh = 0;
-
     var largestTimeStamp = 0;
     for(var i in curveList){
         var curve = curveList[i];
@@ -76,17 +76,15 @@ socket.on('generalUpdate', function(curveList){
             largestTimeStamp = curve.timeOfCreation;
         }
         if(curve.timeOfCreation > timeStamp){
-            bigOh++;
             for(var j in curve.lineSegmentList){
                 var lineSegment = curve.lineSegmentList[j];
                 ctx.beginPath();
-                ctx.strokeStyle = lineSegment.color;
+                ctx.strokeStyle = curve.color;
                 ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
                 ctx.lineTo(lineSegment.xFinal, lineSegment.yFinal);
                 ctx.stroke();
             }
         }
     }
-    console.log("Updates to draw: " + bigOh );
     timeStamp = largestTimeStamp;
 });
