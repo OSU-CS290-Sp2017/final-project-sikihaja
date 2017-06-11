@@ -5,11 +5,20 @@ var lastY;
 var draw = false;
 var socket = io();
 
-document.addEventListener('click', function(e){
-    draw = !draw;
+board.addEventListener('mousedown', function(e){
+	console.log("mouse has been clicked on the board");
+    draw = true;
+});
+board.addEventListener('mouseup', function(e){
+	console.log("mouse has been unclicked on the board");
+	draw = false;
+});
+board.addEventListener('mouseleave', function(e){
+	console.log("mouse has left the board");
+	draw = false;
 });
 
-document.addEventListener('mousemove', function(e){
+board.addEventListener('mousemove', function(e){
     if(!draw){
         lastX = e.clientX;
         lastY = e.clientY;

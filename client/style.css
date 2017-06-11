@@ -2,7 +2,7 @@
 html, body{
     width: 100%;
     height: 100%;
-    margin:0px;
+    margin:5px;
     color: aqua;
     background-color:aqua;
 
@@ -13,13 +13,16 @@ html, body{
     border: 2px solid black;
     background-color: #fff;
     display: flex;
+	width: 90%;
+	height: 70%;
+	margin-right: 5px;
 }
 
 .site-title{
-  font-size: 24px;
-  padding: 10px 20px;
-  color: black;
-
+	font-size: 24px;
+	padding: 10px 20px;
+	color: black;
+	font-family: inconsolata;
 }
 
 .thicc-bar{
@@ -32,6 +35,6 @@ html, body{
 }
 
 #thicc-button{
-  width: 18px;
-  height: 18px;
+  width: 80px;
+  height: 50px;
 }
