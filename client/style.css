@@ -6,6 +6,10 @@ html, body{
 
 }
 
+li{
+  display: inline-block;
+}
+
 #board{
     border-radius: 2%;
     border: 2px solid black;
@@ -18,14 +22,16 @@ html, body{
 }
 
 #site-title{
-	font-size: 24px;
+	font-size: 36px;
 	padding: 10px 20px;
 	color: black;
 	font-family: inconsolata;
+  text-align: center;
 }
 
 #thicc-bar{
   display: inline-block;
+  padding: 5px;
 }
 
 #Thicc-text{
@@ -36,4 +42,29 @@ html, body{
 #thicc-button{
   width: 80px;
   height: 50px;
+}
+
+#foot{
+  display: block;
+  font-size: 18px;
+  font-family: inconsolata;
+  padding: 8px;
+  background-color: #bdc3cc;
+  border: 2px solid black;
+}
+
+#authors{
+  /*/display: inline-block;/*/
+  /*/float: left;/*/
+  padding: none;
+  text-align: center;
+
+}
+
+#author-item{
+  padding-left: 20px;
+}
+
+#rob-email{
+  text-align: center;
 }
