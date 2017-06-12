@@ -13,5 +13,6 @@ Drawings fade out dynamically, decreasing in opacity as time passes. Maybe losin
 Things left to do:<br />
 Add list of contributors (names/hex colors)<br />
 incorporate mongodb for storing curve objects<br />
-function to change color based on opacity<br />
-allow the user to pick the fade rate of the curve<br />
+user persistence (?) <br />
+comment code for clarity <br />
+allow the user to pick the fade rate of the curve(?)<br />
