@@ -46,7 +46,7 @@ board.addEventListener('mousemove', function(e){
         }
 
         ctx.beginPath();
-        ctx.strokeStyle = "gray";
+        ctx.strokeStyle = myColor;
         ctx.moveTo(lastX - rect.left, lastY - rect.top);
         ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
         ctx.stroke();
@@ -83,16 +83,26 @@ button.addEventListener('click', function(){
 });
 
 
+socket.on('connectionResponse', function(data){
+    myColor = data;
+});
+    
+
 socket.on('generalUpdate', function(curveList){
     var largestTimeStamp = 0;
+    ctx.clearRect(0, 0, 1000, 600);
+    
     for(var i in curveList){
         var curve = curveList[i];
-        if(curve.timeOfCreation > largestTimeStamp){
-            largestTimeStamp = curve.timeOfCreation;
+        console.log(curve.color);
+
+        if(curve.timeOfLastUpdate > largestTimeStamp){
+            largestTimeStamp = curve.timeOfLastUpdate;
         }
         if(curve.timeOfCreation > timeStamp){
             for(var j in curve.lineSegmentList){
                 var lineSegment = curve.lineSegmentList[j];
+                
                 ctx.beginPath();
                 ctx.strokeStyle = curve.color;
                 ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
