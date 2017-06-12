@@ -8,6 +8,7 @@ var socket = io();
 var timeStamp = 0;
 var newUpdate = false;
 var myColor;
+var myWidth;
 
 var oldWidths = []; //should only hold the 3 last widths
 oldWidths.push(ctx.lineWidth);
@@ -43,13 +44,17 @@ board.addEventListener('mousemove', function(e){
             xFinal: e.clientX - rect.left,
             yFinal: e.clientY - rect.top,
             ID: Math.floor(Math.random()*100000),
+            width: myWidth,
         }
 
         ctx.beginPath();
+        ctx.lineWidth = myWidth;
         ctx.strokeStyle = myColor;
         ctx.moveTo(lastX - rect.left, lastY - rect.top);
         ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
         ctx.stroke();
+        
+        console.log(myWidth);
 
         CURVE[pack.ID] = pack;
 
@@ -79,7 +84,8 @@ button.addEventListener('click', function(){
     }
   } while (repeated == true);
   oldWidths.push(testWidth);
-  ctx.lineWidth = testWidth;
+  //ctx.lineWidth = testWidth; Due to the way that canvas works, this affects every line's width, not just the ones that the user draws. 
+    myWidth = testWidth;
 });
 
 
@@ -94,8 +100,8 @@ socket.on('opacityUpdate', function(curveList){
             var curve = curveList[i];
             for(var j in curve.lineSegmentList){
                 var lineSegment = curve.lineSegmentList[j];
-
                 ctx.beginPath();
+                ctx.lineWidth = lineSegment.width;
                 ctx.strokeStyle = curve.color;
                 ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
                 ctx.lineTo(lineSegment.xFinal, lineSegment.yFinal);
@@ -106,20 +112,19 @@ socket.on('opacityUpdate', function(curveList){
 });
 
 socket.on('generalUpdate', function(curveList){
+    
     var largestTimeStamp = 0;    
     
     for(var i in curveList){
         var curve = curveList[i];
-        console.log(curve.color);
-
         if(curve.timeOfLastUpdate > largestTimeStamp){
             largestTimeStamp = curve.timeOfLastUpdate;
         }
         if(curve.timeOfLastUpdate > timeStamp){
             for(var j in curve.lineSegmentList){
                 var lineSegment = curve.lineSegmentList[j];
-                
                 ctx.beginPath();
+                ctx.lineWidth = lineSegment.width;
                 ctx.strokeStyle = curve.color;
                 ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
                 ctx.lineTo(lineSegment.xFinal, lineSegment.yFinal);

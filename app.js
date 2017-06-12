@@ -3,7 +3,7 @@ var app = express();
 var serv = require('http').Server(app);
 var port = 149;
 var io = require('socket.io')(serv, {});
-var deltaT = 1000/40;
+var deltaT = 1000/20;
 var timeStamp = 0;
 
 var SOCKET_LIST = {};
@@ -23,7 +23,7 @@ var curve = function(time, r, b, g, lines, id){
         ID: id,
     }
     self.update = function(){
-        self.opacity -= 0.05;
+        self.opacity -= 0.005;
         self.color = "rgba(" + self.colorR + ", " + self.colorG + ", " + self.colorB + ", " + self.opacity + ")";
         self.timeOfLastUpdate = timeStamp;
         
@@ -87,20 +87,14 @@ setInterval(function(socket){ // This is a function that is called every 'tick' 
     
     timeStamp++; //This is a timestamp that records the amount of ticks since the server was started.
     
-    if(timeStamp % 30 == 0){ //Update opacity every ten ticks
-        for(var i in CURVE_LIST){
-            var c = CURVE_LIST[i];
-            c.update();
-        }
-        for(var i in SOCKET_LIST){
-            var socket = SOCKET_LIST[i];
-            socket.emit('opacityUpdate', CURVE_LIST); 
-        }
-    }else{
-        for(var i in SOCKET_LIST){ //Send the list of curves to everybody currently connected.
-            var socket = SOCKET_LIST[i];
-            socket.emit('generalUpdate', CURVE_LIST);
-        }
+    for(var i in CURVE_LIST){
+        var c = CURVE_LIST[i];
+        c.update();
     }
+    for(var i in SOCKET_LIST){
+        var socket = SOCKET_LIST[i];
+        socket.emit('opacityUpdate', CURVE_LIST); 
+    }
+
  }, deltaT);
 
