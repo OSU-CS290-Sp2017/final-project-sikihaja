@@ -10,16 +10,29 @@ var SOCKET_LIST = {};
 
 var CURVE_LIST = {};
 
-var curve = function(time, c, lines){
+var curve = function(time, r, b, g, lines, id){
     var self = {
         timeOfCreation: time,
+        timeOfLastUpdate: time,
         lineSegmentList: lines,
-        color: c,
+        colorR: r,
+        colorB: b,
+        colorG: g,
+        opacity: 1,
+        color: "rgba(" + r + ", " + b + ", " + g + ", " + 1 + ")",
+        ID: id,
+    }
+    self.update = function(){
+        self.opacity -= 0.05;
+        self.color = "rgba(" + self.colorR + ", " + self.colorG + ", " + self.colorB + ", " + self.opacity + ")";
+        self.timeOfLastUpdate = timeStamp;
+        
+        if(self.opacity < 0){
+            delete CURVE_LIST[self.ID];
+        }
     }
     return self;
 }
-
-
 
 app.use('/client', express.static(__dirname + '/client'));
 
@@ -43,7 +56,14 @@ io.sockets.on('connection', function(socket){
     SOCKET_LIST[socket.id] = socket;
 
     var hexColor = "#" + Math.floor(Math.random()*16777215).toString(16);
-    socket.emit('connectionResponse', hexColor);
+    
+    
+    var colorR = Math.floor(Math.random()*200);
+    var colorG = Math.floor(Math.random()*200);
+    var colorB = Math.floor(Math.random()*200);
+    var rgbaColor = "rgba(" + colorR + ", " + colorG + ", " + colorB + ", " + 1 + ")";
+
+    socket.emit('connectionResponse', rgbaColor);
 
     console.log("Connection from " + socket.id + ".");
     
@@ -54,7 +74,7 @@ io.sockets.on('connection', function(socket){
         
         var id = Math.floor(Math.random()*1000000);
         
-        var c = curve(timeStamp, hexColor, data);
+        var c = curve(timeStamp, colorR, colorG, colorB, data, id);
         
         CURVE_LIST[id] = c;
         
@@ -67,9 +87,20 @@ setInterval(function(socket){ // This is a function that is called every 'tick' 
     
     timeStamp++; //This is a timestamp that records the amount of ticks since the server was started.
     
-    for(var i in SOCKET_LIST){ //Send the list of curves to everybody currently connected.
-        var socket = SOCKET_LIST[i];
-        socket.emit('generalUpdate', CURVE_LIST);
+    if(timeStamp % 30 == 0){ //Update opacity every ten ticks
+        for(var i in CURVE_LIST){
+            var c = CURVE_LIST[i];
+            c.update();
+        }
+        for(var i in SOCKET_LIST){
+            var socket = SOCKET_LIST[i];
+            socket.emit('opacityUpdate', CURVE_LIST); 
+        }
+    }else{
+        for(var i in SOCKET_LIST){ //Send the list of curves to everybody currently connected.
+            var socket = SOCKET_LIST[i];
+            socket.emit('generalUpdate', CURVE_LIST);
+        }
     }
  }, deltaT);
 

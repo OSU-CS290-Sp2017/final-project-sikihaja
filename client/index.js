@@ -87,10 +87,26 @@ socket.on('connectionResponse', function(data){
     myColor = data;
 });
     
+socket.on('opacityUpdate', function(curveList){
+    if(!draw){
+        ctx.clearRect(0, 0, 1000, 600);
+        for(var i in curveList){
+            var curve = curveList[i];
+            for(var j in curve.lineSegmentList){
+                var lineSegment = curve.lineSegmentList[j];
+
+                ctx.beginPath();
+                ctx.strokeStyle = curve.color;
+                ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
+                ctx.lineTo(lineSegment.xFinal, lineSegment.yFinal);
+                ctx.stroke();
+            }
+        }
+    }
+});
 
 socket.on('generalUpdate', function(curveList){
-    var largestTimeStamp = 0;
-    ctx.clearRect(0, 0, 1000, 600);
+    var largestTimeStamp = 0;    
     
     for(var i in curveList){
         var curve = curveList[i];
@@ -99,7 +115,7 @@ socket.on('generalUpdate', function(curveList){
         if(curve.timeOfLastUpdate > largestTimeStamp){
             largestTimeStamp = curve.timeOfLastUpdate;
         }
-        if(curve.timeOfCreation > timeStamp){
+        if(curve.timeOfLastUpdate > timeStamp){
             for(var j in curve.lineSegmentList){
                 var lineSegment = curve.lineSegmentList[j];
                 
