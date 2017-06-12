@@ -86,7 +86,6 @@ io.sockets.on('connection', function(socket){
 setInterval(function(socket){ // This is a function that is called every 'tick' (currently 40x per second)
     
     timeStamp++; //This is a timestamp that records the amount of ticks since the server was started.
-    
     for(var i in CURVE_LIST){
         var c = CURVE_LIST[i];
         c.update();
