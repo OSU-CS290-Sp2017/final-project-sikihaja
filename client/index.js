@@ -92,7 +92,7 @@ socket.on('connectionResponse', function(data){
     
 socket.on('opacityUpdate', function(curveList){
     if(!draw){
-        ctx.clearRect(0, 0, 1200, 600);
+        ctx.clearRect(0, 0, board.width, board.height);
         for(var i in curveList){
             var curve = curveList[i];
             for(var j in curve.lineSegmentList){
