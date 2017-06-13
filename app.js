@@ -12,8 +12,6 @@ var CURVE_LIST = {};
 
 var curve = function(time, r, g, b, lines, id){ //This is the generic curve object, containing a time of creation
     var self = {
-        timeOfCreation: time,
-        timeOfLastUpdate: time,
         lineSegmentList: lines,
         colorR: r,
         colorG: g,
@@ -22,12 +20,11 @@ var curve = function(time, r, g, b, lines, id){ //This is the generic curve obje
         color: "rgba(" + r + ", " + g + ", " + b + ", " + 1 + ")",
         ID: id,
     }
-    self.update = function(){
+    self.update = function(){ //This function is called every tick and basically just decreases the opacity of every curve.
         self.opacity -= 0.005;
         self.color = "rgba(" + self.colorR + ", " + self.colorG + ", " + self.colorB + ", " + self.opacity + ")";
-        self.timeOfLastUpdate = timeStamp;
         
-        if(self.opacity < 0){
+        if(self.opacity < 0){ //If the opacity drops below 0, it should be deleted from the master list so the user isn't rendering pointless invisible curves.
             delete CURVE_LIST[self.ID];
         }
     }

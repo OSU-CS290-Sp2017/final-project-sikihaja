@@ -5,7 +5,6 @@ var lastX;
 var lastY;
 var draw = false;
 var socket = io();
-var timeStamp = 0;
 var newUpdate = false;
 var myColor;
 var myWidth = 1;
@@ -17,11 +16,11 @@ var CURVE = {};
 
 
 board.addEventListener('mousedown', function(e){
-    recordSegments = true;
+    recordSegments = true; //If the mouse has been clicked, we should start adding line segments to the curve to be sent to the server.
     draw = true;
 });
 board.addEventListener('mouseup', function(e){
-    newUpdate = true;
+    newUpdate = true;//If the mouse has been unclicked, then the curve is done being drawn and we can send it to the server to be added to the master list.
 	draw = false;
 });
 board.addEventListener('mouseleave', function(e){
@@ -38,7 +37,7 @@ board.addEventListener('mousemove', function(e){
         lastY = e.clientY;
     }
     if(draw){
-        var pack = {
+        var pack = { //This pack contains a complete line segment
             xInitial: lastX - rect.left,
             yInitial: lastY - rect.top,
             xFinal: e.clientX - rect.left,
@@ -47,6 +46,7 @@ board.addEventListener('mousemove', function(e){
             width: myWidth,
         }
 
+        //The next six lines draw the curve temporarily so that the user can see what they're drawing. It will be erased after mouseup and redrawn when the server sends it out in the curve list.
         ctx.beginPath();
         ctx.lineWidth = myWidth;
         ctx.strokeStyle = myColor;
@@ -60,7 +60,7 @@ board.addEventListener('mousemove', function(e){
         lastY = e.clientY;
     }
     if(newUpdate){
-        socket.emit('curveUpdate', CURVE);
+        socket.emit('curveUpdate', CURVE); //Send the server a package containing a curve object.
         CURVE = {};
         newUpdate = false;
     }
@@ -94,8 +94,8 @@ socket.on('connectionResponse', function(data){
     myColor = data;
 });
 
-socket.on('opacityUpdate', function(curveList){
-    if(!draw){
+socket.on('opacityUpdate', function(curveList){ //When the client receives this package from the server, it needs to redraw the canvas with the updated opacities.
+    if(!draw){ //However, if the user is currently drawing a curve, clearing the canvas would make it seem like the curve he's drawing is being erased. So we only clear if he's not drawing.
         ctx.clearRect(0, 0, board.width, board.height);
         for(var i in curveList){
             var curve = curveList[i];
