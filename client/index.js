@@ -54,7 +54,6 @@ board.addEventListener('mousemove', function(e){
         ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
         ctx.stroke();
         
-
         CURVE[pack.ID] = pack;
 
         lastX = e.clientX;
@@ -93,7 +92,7 @@ socket.on('connectionResponse', function(data){
     
 socket.on('opacityUpdate', function(curveList){
     if(!draw){
-        ctx.clearRect(0, 0, 1000, 600);
+        ctx.clearRect(0, 0, 1200, 600);
         for(var i in curveList){
             var curve = curveList[i];
             for(var j in curve.lineSegmentList){
