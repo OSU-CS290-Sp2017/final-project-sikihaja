@@ -10,14 +10,14 @@ var SOCKET_LIST = {};
 
 var CURVE_LIST = {};
 
-var curve = function(time, r, b, g, lines, id){
+var curve = function(time, r, g, b, lines, id){ //This is the generic curve object, containing a time of creation
     var self = {
         timeOfCreation: time,
         timeOfLastUpdate: time,
         lineSegmentList: lines,
         colorR: r,
-        colorB: b,
         colorG: g,
+        colorB: b,
         opacity: 1,
         color: "rgba(" + r + ", " + g + ", " + b + ", " + 1 + ")",
         ID: id,
