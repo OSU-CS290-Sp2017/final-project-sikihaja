@@ -53,7 +53,7 @@ board.addEventListener('mousemove', function(e){
         ctx.moveTo(lastX - rect.left, lastY - rect.top);
         ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
         ctx.stroke();
-        
+
         CURVE[pack.ID] = pack;
 
         lastX = e.clientX;
@@ -85,11 +85,15 @@ button.addEventListener('click', function(){
   myWidth = testWidth;
 });
 
+function changeWidth(newWidth) {
+  console.log(newWidth);
+  myWidth = newWidth;
+}
 
 socket.on('connectionResponse', function(data){
     myColor = data;
 });
-    
+
 socket.on('opacityUpdate', function(curveList){
     if(!draw){
         ctx.clearRect(0, 0, board.width, board.height);
