@@ -4,6 +4,7 @@ Jason Kiff<br />
 Jonah Siekmann<br />
 Burton Jaursch<br/>
 Alec Hayden<br/>
+Jared Tence<br/>
 
 
 Dynamic drawing board. Each collaborator gets their own hex color to draw with, and there's a running list of current collaborators.<br />
