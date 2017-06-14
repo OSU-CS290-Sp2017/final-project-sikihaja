@@ -3,7 +3,7 @@ var app = express();
 var serv = require('http').Server(app);
 var port = 149;
 var io = require('socket.io')(serv, {});
-var deltaT = 1000/20;
+var deltaT = 1000/10;
 var timeStamp = 0;
 
 var SOCKET_LIST = {};
@@ -54,30 +54,37 @@ io.sockets.on('connection', function(socket){
     SOCKET_LIST[socket.id] = socket;
     
     //These next four lines generate an RGBA value that is randomly assigned when a user connects to the server.
-    var colorR = Math.floor(Math.random()*200);
-    var colorG = Math.floor(Math.random()*200);
-    var colorB = Math.floor(Math.random()*200);
+    var colorR = Math.floor(Math.random()*255);
+    var colorG = Math.floor(Math.random()*255);
+    var colorB = Math.floor(Math.random()*255);
     var rgbaColor = "rgba(" + colorR + ", " + colorG + ", " + colorB + ", " + 1 + ")";
 
-    socket.emit('connectionResponse', rgbaColor); // The server sends a package containing the user's color to the user, so that his client-side code knows which color to draw.
+    socket.emit('connectionResponse', rgbaColor); // The server sends a package containing the user's color to the user, so that the client knows which color to use for their own curves.
+    console.log("Connection from " + socket.id + ". " + numberOfObjects(SOCKET_LIST) + " users currently online.");
 
-    console.log("Connection from " + socket.id + ".");
-    
-    
-    
     
     socket.on('curveUpdate', function(data){ // This is executed when the server receives a package from a client with a new curve to be added to the list.
         
         var id = Math.floor(Math.random()*1000000);
-        
         var c = curve(timeStamp, colorR, colorG, colorB, data, id);
-        
         CURVE_LIST[id] = c; // Add the curve to the master list of curves
         
     });
     
-    
+    socket.on('disconnect', function(){ //This is executed when a socket disconnects, so the server doesn't send packages to sockets that don't exist anymore.
+
+        delete SOCKET_LIST[socket.id];
+        console.log(socket.id + " disconnected. " + numberOfObjects(SOCKET_LIST) + " users currently online.")
+    });
 });
+
+var numberOfObjects = function(list){
+    var count = 0;
+    for(var i in list){
+        count++;
+    }
+    return count;
+}
 
 setInterval(function(socket){ // This is a function that is called every 'tick' (currently 40x per second)
     
@@ -90,6 +97,5 @@ setInterval(function(socket){ // This is a function that is called every 'tick' 
         var socket = SOCKET_LIST[i];
         socket.emit('opacityUpdate', CURVE_LIST); 
     }
-
  }, deltaT);
 
