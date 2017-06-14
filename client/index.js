@@ -21,7 +21,7 @@ contributors.addEventListener('click', function(event){
 	for (var i = 0; i < contributor_lis.length; i++){
 		contributor_lis[i].classList.toggle('hidden');
 	}
-	
+
 });
 
 board.addEventListener('mousedown', function(e){
@@ -35,7 +35,6 @@ board.addEventListener('mouseup', function(e){
 board.addEventListener('mouseleave', function(e){
 	draw = false;
 });
-
 
 
 board.addEventListener('mousemove', function(e){
@@ -75,6 +74,20 @@ board.addEventListener('mousemove', function(e){
     }
 });
 
+colorButton = document.getElementById('color-button');
+var r = 0, g = 0, b = 0;
+
+function updateColor(red, green, blue){
+	r = red;
+	g = green;
+	b = blue;
+	document.getElementById('color-display').style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+}
+
+colorButton.addEventListener('click', function(){
+	myColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+});
+
 button.addEventListener('click', function(){
   var testWidth; //testing if width is in oldWidths
   do {
@@ -112,7 +125,7 @@ socket.on('opacityUpdate', function(curveList){ //When the client receives this 
                 var lineSegment = curve.lineSegmentList[j];
                 ctx.beginPath();
                 ctx.lineWidth = lineSegment.width;
-                ctx.strokeStyle = curve.color;
+                ctx.strokeStyle = myColor;
                 ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
                 ctx.lineTo(lineSegment.xFinal, lineSegment.yFinal);
                 ctx.stroke();

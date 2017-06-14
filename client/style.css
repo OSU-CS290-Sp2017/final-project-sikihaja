@@ -60,6 +60,7 @@ a:hover{
     display: block;
 }
 
+
 #style-box{
   margin: 20px;
   justify-content: center;
@@ -102,6 +103,39 @@ a:hover{
   width: 80px;
   height: 50px;
   font-family: inconsolata;
+}
+
+#color-sliders{
+  float: left;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#color-slider{
+  margin: 10px;
+}
+
+#color-elements{
+  float: right;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#color-button{
+  width: 80px;
+  height: 50px;
+  margin: 20px;
+  font-family: inconsolata;
+}
+
+#color-display{
+  display: block;
+  width: 80px;
+  height: 50px;
+  margin: 20px;
+  background-color: rgb(250, 250, 250);
 }
 
 #foot{
