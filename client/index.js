@@ -108,7 +108,6 @@ button.addEventListener('click', function(){
 });
 
 function changeWidth(newWidth) {
-  console.log(newWidth);
   myWidth = newWidth;
 }
 
