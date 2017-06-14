@@ -1,6 +1,7 @@
 var board = document.getElementById('board');
 var ctx = board.getContext('2d');
 var button = document.getElementById('thicc-button');
+var colorButton = document.getElementById('color-button');
 var lastX;
 var lastY;
 var draw = false;
@@ -74,7 +75,6 @@ board.addEventListener('mousemove', function(e){
     }
 });
 
-colorButton = document.getElementById('color-button');
 var r = 0, g = 0, b = 0;
 
 function updateColor(red, green, blue){
@@ -86,6 +86,11 @@ function updateColor(red, green, blue){
 
 colorButton.addEventListener('click', function(){
 	myColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+    socket.emit('colorUpdate', {
+        red: r,
+        green: g,
+        blue: b,
+    });
 });
 
 button.addEventListener('click', function(){
@@ -124,7 +129,7 @@ socket.on('opacityUpdate', function(curveList){ //When the client receives this 
                 var lineSegment = curve.lineSegmentList[j];
                 ctx.beginPath();
                 ctx.lineWidth = lineSegment.width;
-                ctx.strokeStyle = myColor;
+                ctx.strokeStyle = curve.color;
                 ctx.moveTo(lineSegment.xInitial, lineSegment.yInitial);
                 ctx.lineTo(lineSegment.xFinal, lineSegment.yFinal);
                 ctx.stroke();

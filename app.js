@@ -61,6 +61,7 @@ io.sockets.on('connection', function(socket){
     socket.color = rgbaColor;
     socket.toRemove = false;
     SOCKET_LIST[socket.id] = socket;
+    
 
     socket.emit('connectionResponse', rgbaColor); // The server sends a package containing the user's color to the user, so that the client knows which color to use for their own curves.
     console.log("Connection from " + socket.id + ". " + numberOfObjects(SOCKET_LIST) + " users currently online.");
@@ -73,6 +74,12 @@ io.sockets.on('connection', function(socket){
         CURVE_LIST[id] = c; // Add the curve to the master list of curves
         
     });
+    
+    socket.on('colorUpdate', function(data){
+        colorR = data.red;
+        colorG = data.green;
+        colorB = data.blue;
+    })
     
     socket.on('disconnect', function(){ //This is executed when a socket disconnects, so the server doesn't send packages to sockets that don't exist anymore.
         socket.toRemove = true; //We don't want to remove a user from the contributor list unless all of his curves have faded, so we need to keep him in the socket_list until then.
