@@ -27,15 +27,30 @@
 	</div>
    <canvas id="board" width="1200" height="600"></canvas>
 
-   <div id="thicc-bar">
-     <p id="Thicc-text">Want to change your thickness? Click for random thickness</p>
-     <button type="button" id="thicc-button">Get Thicc!</button>
+   <div id="style-box">
+
+    <div id="style">
+
+    </div>
+
+    <div id="style">
+
+    </div>
+
+    <div id="style">
+     <div id="thicc-bar">
+      <p id="Thicc-text">Want to change your thickness? Click for random thickness</p>
+      <button type="button" id="thicc-button">Get Thicc!</button>
+     </div>
+     <div id="thicc-bar">
+       <p id="Thicc-text">Want to choose a thickness? Use this slider</p>
+       <input type="range" min="1" max="7" value="3" step="1" onchange="changeWidth(this.value)" />
+     </div>
+    </div>
+
    </div>
 
-   <div id="thicc-bar">
-     <p id="Thicc-text">Want to choose a thickness? Use this slider</p>
-     <input type="range" min="1" max="7" value="3" step="1" onchange="changeWidth(this.value)" />
-   </div>
+
 
    <footer id="foot">
      <ul id="authors">

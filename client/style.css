@@ -60,6 +60,24 @@ a:hover{
     display: block;
 }
 
+#style-box{
+  margin: 20px;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+#style{
+  flex: 0 1 28%;
+  display: flex;
+  margin: 2px;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 2%;
+  background-color: #fff;
+}
+
 #site-title{
 	font-size: 36px;
 	padding: 10px 20px;
