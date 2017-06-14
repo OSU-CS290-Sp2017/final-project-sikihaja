@@ -18,6 +18,37 @@ a:hover{
   text-decoration: underline;
 }
 
+.hidden{
+	display: none;
+}
+
+#contributors-ul{
+	list-style: none;
+	padding-left: 0;
+}
+
+.contributor-li{
+	text-align: center;
+	width: 100%;
+}
+
+#contributors-title{
+	margin: 3px;
+	text-align: center;
+}
+
+#contributors{
+	font-family: inconsolata;
+	position: fixed;
+	top: 5px;
+	left: 5px;
+	max-width: 200px;
+	min-width: 10px;
+	background-color: white;
+	padding: 5px;
+	border: 5px solid;
+}
+
 #board{
     border-radius: 2%;
     border: 2px solid black;
@@ -71,6 +102,8 @@ a:hover{
   text-align: center;
 
 }
+
+
 
 #author-item{
   padding-left: 20px;

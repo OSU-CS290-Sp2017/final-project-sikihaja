@@ -9,12 +9,21 @@ var timeStamp = 0;
 var newUpdate = false;
 var myColor;
 var myWidth = 1;
+var contributors = document.getElementById('contributors');
 
 var oldWidths = []; //should only hold the 3 last widths
 oldWidths.push(ctx.lineWidth);
 
 var CURVE = {};
 
+
+contributors.addEventListener('click', function(event){
+	var contributor_lis = document.getElementById('contributors-ul').getElementsByClassName('contributor-li');
+	for (var i = 0; i < contributor_lis.length; i++){
+		contributor_lis[i].classList.toggle('hidden');
+	}
+	
+});
 
 board.addEventListener('mousedown', function(e){
     recordSegments = true;
