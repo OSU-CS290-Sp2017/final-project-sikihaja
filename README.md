@@ -17,3 +17,5 @@ Add list of contributors (names/hex colors) (Jason)<br />
 Allow the user to pick the fade rate of the curve (Alec)<br />
 GUI/Drawing enhancements, geometrical shapes (Jared)<br />
 Various design improvements (Burton)<br />
+
+'Snapshot' image stored in a JSON file, able to be called up by a user.<br />
