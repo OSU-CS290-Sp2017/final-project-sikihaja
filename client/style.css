@@ -104,6 +104,18 @@ a:hover{
   font-family: inconsolata;
 }
 
+#opacity-bar{
+  display: block;
+  padding: 5px;
+  font-family: inconsolata;
+  text-align: center;
+}
+
+#opacity-text{
+  font-size: 18px;
+  color: black;
+}
+
 #foot{
   display: block;
   font-size: 18px;
