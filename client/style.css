@@ -2,7 +2,7 @@
 html, body{
     margin:5px;
     /*/color: aqua;/*/
-    background-color:aqua;
+    background-color:coral;
 
 }
 
@@ -11,11 +11,20 @@ li{
 }
 
 a{
+  display: inline-block;
   color: inherit;
   text-decoration: none;
 }
 a:hover{
   text-decoration: underline;
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+input:hover{
+  cursor: -webkit-grab;
 }
 
 .hidden{
@@ -46,7 +55,9 @@ a:hover{
 	min-width: 10px;
 	background-color: white;
 	padding: 5px;
-	border: 5px solid;
+	border: 2px solid;
+    border-radius: 2%;
+
 }
 
 #board{
@@ -58,20 +69,22 @@ a:hover{
     margin-left: auto;
     margin-right: auto;
     display: block;
+
 }
+
 
 #style-box{
   margin: 20px;
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-
+  text-align: center;
 }
 
 #style{
   flex: 0 1 28%;
   display: flex;
-  margin: 2px;
+  margin: 5px;
   padding: 20px;
   border: 2px solid black;
   border-radius: 2%;
@@ -114,7 +127,45 @@ a:hover{
 #opacity-text{
   font-size: 18px;
   color: black;
+  padding: 20px 0px;
 }
+
+#color-sliders{
+  float: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#color-slider{
+  margin: 10px;
+}
+
+#color-elements{
+  float: right;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#color-button{
+  width: 80px;
+  height: 50px;
+  margin: 20px;
+  font-family: inconsolata;
+}
+
+#color-display{
+  display: block;
+  width: 80px;
+  height: 50px;
+  margin: 20px;
+  background-color: rgb(250, 250, 250);
+}
+
+/*/#range_bar:hover{
+  cursor: -webkit-grab;
+}/*/
 
 #foot{
   display: block;
