@@ -9,7 +9,7 @@ var SOCKET_LIST = {};
 
 var CURVE_LIST = {};
 
-var curve = function(r, g, b, lines, id, fadeRate, owner){ //This is the generic curve object, containing a time of creation
+var curve = function(r, g, b, lines, id, fadeRate, owner){ //This is the generic curve object, containing a list of line segments and other information.
     var self = {
         lineSegmentList: lines,
         colorR: r,
@@ -22,9 +22,8 @@ var curve = function(r, g, b, lines, id, fadeRate, owner){ //This is the generic
         ownerID: owner,
     }
     self.update = function(){ //This function is called every tick and basically just decreases the opacity of every curve.
-        self.opacity -= 0.00005 * deltaT * self.fade;
+        self.opacity -= 0.0001 * deltaT * self.fade;
         self.color = "rgba(" + self.colorR + ", " + self.colorG + ", " + self.colorB + ", " + self.opacity + ")";
-        console.log(self.fade);
         if(self.opacity < 0){ //If the opacity drops below 0, it should be deleted from the master list so the user isn't rendering pointless invisible curves.
             delete CURVE_LIST[self.ID];
         }
@@ -47,8 +46,6 @@ app.get('/index.js', function(req, res){
 });
 
 io.sockets.on('connection', function(socket){
-
-
 
     //These next four lines generate an RGBA value that is randomly assigned when a user connects to the server.
     var colorR = Math.floor(Math.random()*255);
@@ -77,14 +74,14 @@ io.sockets.on('connection', function(socket){
 
     });
 
-    socket.on('colorUpdate', function(data){
+    socket.on('colorUpdate', function(data){ //Package containing an update for the color of the curve that the user has selected
         colorR = data.red;
         colorG = data.green;
         colorB = data.blue;
 		socket.color = "rgba(" + colorR + ", " + colorG + ", " + colorB + ", " + 1 + ")";
     })
 
-    socket.on('changeOpacity', function(data){
+    socket.on('changeOpacity', function(data){ //Package containing an update for the rate at which the user wants their curve to fade
       socket.fadeRate = data.fadeRate;
     })
 
@@ -117,13 +114,13 @@ setInterval(function(socket){ // This is a function that is called every 'tick'.
         var socket = SOCKET_LIST[i];
         socket.emit('opacityUpdate', CURVE_LIST);
 
-        socket.contributions = 0; //This counts the user's active curves on the canvas. If he has disconnected and has no curves, he is removed from the socket list.
+        socket.contributions = 0; //This counts the user's active curves on the canvas. 
         for(var i in CURVE_LIST){
             if(CURVE_LIST[i].ownerID == socket.id){
                 socket.contributions++;
             }
         }
-        if(socket.contributions == 0 && socket.toRemove){
+        if(socket.contributions == 0 && socket.toRemove){ //If the user has disconnected and has no curves, he is removed from the socket list.
             removeUser(socket.id);
         }
 		var contributorColors = [];

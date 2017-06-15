@@ -2,6 +2,7 @@ var board = document.getElementById('board');
 var ctx = board.getContext('2d');
 var button = document.getElementById('thicc-button');
 var colorButton = document.getElementById('color-button');
+var opacityText = document.getElementById('opacity-text');
 var lastX;
 var lastY;
 var draw = false;
@@ -88,7 +89,7 @@ function updateColor(red, green, blue){
 	document.getElementById('color-display').style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
 }
 
-colorButton.addEventListener('click', function(){
+colorButton.addEventListener('click', function(){ //Changes user curve color and sends a package to the server containing the new rgb color.
 	myColor = 'rgb(' + r + ',' + g + ',' + b + ')';
     socket.emit('colorUpdate', {
         red: r,
@@ -120,32 +121,16 @@ function changeWidth(newWidth) {
   myWidth = newWidth;
 }
 
-function changeOpacity(newOpacity) {
-  myOpacity = newOpacity;
-	socket.emit('changeOpacity', {
-		fadeRate: newOpacity,
-	})
+function changeOpacity(newOpacity) { //Changes user opacity fade rate and sends a package to the server containing the new fade rate.
+    myOpacity = newOpacity;
+    socket.emit('changeOpacity', {
+        fadeRate: newOpacity,
+    });
+    opacityText.innerHTML = "Your curves will fade in " + Math.floor(1/(0.0001 * 1000 * myOpacity)) + " seconds. To change that, use this slider.";
 }
 
 
-socket.on('contributors', function(IDs, Colors){
-
-	//this is code for dynamically adding and removing contributors from the contributor list. The second loop does not work. maybe come back and work on it later?
-/* 	 for (var i = 0; i < IDs.length; i++){
-		if (!(currentContributors.includes(IDs[i]))){
-			var newLi = createListItem(IDs[i], Colors[i]);
-			contributorsList.appendChild(newLi);
-			currentContributors.push(IDs[i]);
-		}
-	}
-	for (var i = 0; i < currentContributors.length; i++){
-		if (!(IDs.includes(currentContributors[i]))){
-			console.log("removing child");
-			if (contributorsList.children[i]){
-			contributorsList.removeChild(contributorsList.children[i]);
-			}
-		}
-	}  */
+socket.on('contributors', function(IDs, Colors){ //Updates the list of contributors to reflect who is connected to the server or still has curves drawn on the canvas.
 
 	while (contributorsList.firstChild){
 		contributorsList.removeChild(contributorsList.firstChild);
