@@ -115,10 +115,12 @@ setInterval(function(socket){ // This is a function that is called every 'tick'.
             if(CURVE_LIST[i].ownerID == socket.id){
                 socket.contributions++;
             }
-        }
+        } 	
         if(socket.contributions == 0 && socket.toRemove){
             removeUser(socket.id);
         }
+		//socket.emit('contributors', SOCKET_LIST);
     }
+	
  }, deltaT);
 

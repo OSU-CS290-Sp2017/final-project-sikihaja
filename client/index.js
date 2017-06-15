@@ -9,7 +9,8 @@ var socket = io();
 var newUpdate = false;
 var myColor;
 var myWidth = 1;
-var contributors = document.getElementById('contributors');
+var contributorsList = document.getElementById('contributors-ul');
+var contributorsIsOpen = false;
 
 var oldWidths = []; //should only hold the 3 last widths
 oldWidths.push(ctx.lineWidth);
@@ -18,6 +19,7 @@ var CURVE = {};
 
 
 contributors.addEventListener('click', function(event){
+	contributorsIsOpen = !contributorsIsOpen;
 	var contributor_lis = document.getElementById('contributors-ul').getElementsByClassName('contributor-li');
 	for (var i = 0; i < contributor_lis.length; i++){
 		contributor_lis[i].classList.toggle('hidden');
@@ -114,6 +116,27 @@ button.addEventListener('click', function(){
 
 function changeWidth(newWidth) {
   myWidth = newWidth;
+}
+
+socket.on('contributors', function(sockets){
+	while (contributorsList.firstChild){
+		contributorsList.removeChild(contributorsList.firstChild);
+	}
+	var newLi;
+	for (var i = 0; i < sockets.length; i++){
+		newLi = createListItem(sockets[i].id);
+		contributorsList.appendChild(newLi);
+	}
+});
+
+var createListItem = function(socketID){
+	var newLi = document.createElement('li');
+	newLi.classList.add('contributor-li');
+	if (contributorsIsOpen){
+		newLi.classList.add('hidden');
+	}
+	newLi.textContent = socketID;
+	return newLi;
 }
 
 socket.on('connectionResponse', function(data){
