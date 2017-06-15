@@ -18,25 +18,32 @@
 
   </header>
 	<div id="contributors">
-		<h3 id="contributors-title">CURRENT CONTRIBUTORS</h3>
+		<h3 id="contributors-title">CURRENT<br>CONTRIBUTORS</h3>
 		<ul id="contributors-ul">
-			<li class="contributor-li hidden">sample contributor 1</li>
-			<li class="contributor-li hidden">sample contributor 2</li>
-			<li class="contributor-li hidden">sample contributor 3</li>
 		</ul>
 	</div>
-   <canvas id="board" width="1200" height="600"></canvas>
+  <canvas id="board" width="1200" height="600"></canvas>
 
-   <div id="style-box">
+  <div id="style-box">
 
     <div id="style">
 
+      <div id="color-sliders">
+        <p id="Thicc-text">Want to change the color of your sketch? Use these tools </p>
+        <input id="color-slider" type="range" min="0" max="250" value="0" step="1" oninput="updateColor(value,g,b)" />
+        <input id="color-slider" type="range" min="0" max="250" value="0" step="1" oninput="updateColor(r,value,b)" />
+        <input id="color-slider" type="range" min="0" max="250" value="0" step="1" oninput="updateColor(r,g,value)" />
+      </div>
+      <div id="color-elements">
+        <div id="color-display"></div>
+        <button type="button" id="color-button">Change Color</button>
+      </div>
     </div>
 
     <div id="style">
       <div id="opacity-bar">
         <p id="opacity-text">Want to choose the rate at which your lines fade out? Use this slider</p>
-        <input type="range" min="1" max="7" value="3" step="1" onchange="changeWidth(this.value)" />
+        <input type="range" min=".25" max="1" value="1" step=".05" onchange="changeOpacity(this.value)" />
       </div>
     </div>
 
@@ -47,7 +54,7 @@
      </div>
      <div id="thicc-bar">
        <p id="Thicc-text">Want to choose a thickness? Use this slider</p>
-       <input type="range" min="1" max="7" value="3" step="1" onchange="changeWidth(this.value)" />
+       <input type="range" min="1" max="7" value="5" step="1" onchange="changeWidth(this.value)" />
      </div>
     </div>
 
@@ -57,11 +64,11 @@
 
    <footer id="foot">
      <ul id="authors">
-       <li><em><a href="https://github.com/OSU-CS290-Sp2017/final-project-sikihaja">This project</a> was made for OSU's CS290 Final Project</em></li>
+       <li><em><a href="https://github.com/OSU-CS290-Sp2017/final-project-sikihaja">This</a> is a final project for CS 290 at <a href="http://oregonstate.edu/">Oregon State University</a></em></li>
        <li id="author-item">Authors: </li>
        <li><a href="https://github.com/JKiff">Jason Kiff</a>,</li>
        <li><a href="https://github.com/siekmanj">Jonah Siekmann</a>,</li>
-       <li><a href="https://github.com/Jaursch">Burton Jaursch </a></li>
+       <li><a href="https://github.com/Jaursch">Burton Jaursch</a>,</li>
        <li><a href="https://github.com/THEAlecHayden23">Alec Hayden</a>, &</li>
        <li><a href="https://github.com/jmanosu">Jared Tence</a></li>
      </ul>
