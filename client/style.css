@@ -2,7 +2,7 @@
 html, body{
     margin:5px;
     /*/color: aqua;/*/
-    background-color:aqua;
+    background-color:coral;
 
 }
 
@@ -46,7 +46,9 @@ a:hover{
 	min-width: 10px;
 	background-color: white;
 	padding: 5px;
-	border: 5px solid;
+	border: 2px solid;
+    border-radius: 2%;
+
 }
 
 #board{
