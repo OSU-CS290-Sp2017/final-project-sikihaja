@@ -79,6 +79,7 @@ io.sockets.on('connection', function(socket){
         colorR = data.red;
         colorG = data.green;
         colorB = data.blue;
+		socket.color = "rgba(" + colorR + ", " + colorG + ", " + colorB + ", " + 1 + ")";
     })
     
     socket.on('disconnect', function(){ //This is executed when a socket disconnects, so the server doesn't send packages to sockets that don't exist anymore.
@@ -119,12 +120,13 @@ setInterval(function(socket){ // This is a function that is called every 'tick'.
         if(socket.contributions == 0 && socket.toRemove){
             removeUser(socket.id);
         }
-		
+		var contributorColors = [];
 		var contributorList = [];
 		for (var i in SOCKET_LIST){
 			contributorList.push(SOCKET_LIST[i].id);
+			contributorColors.push(SOCKET_LIST[i].color);
 		}
-		socket.emit('contributors', contributorList);
+		socket.emit('contributors', contributorList, contributorColors);
     }
 	
  }, deltaT);
