@@ -1,14 +1,18 @@
 var board = document.getElementById('board');
 var ctx = board.getContext('2d');
 var button = document.getElementById('thicc-button');
+var colorButton = document.getElementById('color-button');
 var lastX;
 var lastY;
 var draw = false;
 var socket = io();
 var newUpdate = false;
 var myColor;
+var myOpacity;
 var myWidth = 1;
-var contributors = document.getElementById('contributors');
+var contributorsList = document.getElementById('contributors-ul');
+var contributorsIsOpen = false;
+var currentContributors = [];
 
 var oldWidths = []; //should only hold the 3 last widths
 oldWidths.push(ctx.lineWidth);
@@ -17,11 +21,12 @@ var CURVE = {};
 
 
 contributors.addEventListener('click', function(event){
+	contributorsIsOpen = !contributorsIsOpen;
 	var contributor_lis = document.getElementById('contributors-ul').getElementsByClassName('contributor-li');
 	for (var i = 0; i < contributor_lis.length; i++){
 		contributor_lis[i].classList.toggle('hidden');
 	}
-	
+
 });
 
 board.addEventListener('mousedown', function(e){
@@ -35,7 +40,6 @@ board.addEventListener('mouseup', function(e){
 board.addEventListener('mouseleave', function(e){
 	draw = false;
 });
-
 
 
 board.addEventListener('mousemove', function(e){
@@ -75,6 +79,24 @@ board.addEventListener('mousemove', function(e){
     }
 });
 
+var r = 0, g = 0, b = 0;
+
+function updateColor(red, green, blue){
+	r = red;
+	g = green;
+	b = blue;
+	document.getElementById('color-display').style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+}
+
+colorButton.addEventListener('click', function(){
+	myColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+    socket.emit('colorUpdate', {
+        red: r,
+        green: g,
+        blue: b,
+    });
+});
+
 button.addEventListener('click', function(){
   var testWidth; //testing if width is in oldWidths
   do {
@@ -95,8 +117,55 @@ button.addEventListener('click', function(){
 });
 
 function changeWidth(newWidth) {
-  console.log(newWidth);
   myWidth = newWidth;
+}
+
+function changeOpacity(newOpacity) {
+  myOpacity = newOpacity;
+	socket.emit('changeOpacity', {
+		fadeRate: newOpacity,
+	})
+}
+
+
+socket.on('contributors', function(IDs, Colors){
+
+	//this is code for dynamically adding and removing contributors from the contributor list. The second loop does not work. maybe come back and work on it later?
+/* 	 for (var i = 0; i < IDs.length; i++){
+		if (!(currentContributors.includes(IDs[i]))){
+			var newLi = createListItem(IDs[i], Colors[i]);
+			contributorsList.appendChild(newLi);
+			currentContributors.push(IDs[i]);
+		}
+	}
+	for (var i = 0; i < currentContributors.length; i++){
+		if (!(IDs.includes(currentContributors[i]))){
+			console.log("removing child");
+			if (contributorsList.children[i]){
+			contributorsList.removeChild(contributorsList.children[i]);
+			}
+		}
+	}  */
+
+	while (contributorsList.firstChild){
+		contributorsList.removeChild(contributorsList.firstChild);
+	}
+	var newLi;
+	for (var i = 0; i < IDs.length; i++){
+		newLi = createListItem(IDs[i], Colors[i]);
+		contributorsList.appendChild(newLi);
+	}
+});
+
+var createListItem = function(socketID, userColor){
+	var newLi = document.createElement('li');
+	newLi.classList.add('contributor-li');
+	if (contributorsIsOpen){
+		newLi.classList.add('hidden');
+	}
+	newLi.textContent = socketID;
+	newLi.style.color = userColor;
+	return newLi;
 }
 
 socket.on('connectionResponse', function(data){
