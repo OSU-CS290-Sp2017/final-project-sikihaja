@@ -8,6 +8,7 @@ var draw = false;
 var socket = io();
 var newUpdate = false;
 var myColor;
+var myOpacity;
 var myWidth = 1;
 var contributorsList = document.getElementById('contributors-ul');
 var contributorsIsOpen = false;
@@ -119,8 +120,17 @@ function changeWidth(newWidth) {
   myWidth = newWidth;
 }
 
+function changeOpacity(newOpacity) {
+  myOpacity = newOpacity;
+	socket.emit('changeOpacity', {
+		fadeRate: newOpacity,
+	})
+}
+
+
 socket.on('contributors', function(IDs, Colors){
-	
+
+
 	//this is code for dynamically adding and removing contributors from the contributor list. The second loop does not work. maybe come back and work on it later?
 /* 	 for (var i = 0; i < IDs.length; i++){
 		if (!(currentContributors.includes(IDs[i]))){
@@ -137,7 +147,7 @@ socket.on('contributors', function(IDs, Colors){
 			}
 		}
 	}  */
-	
+
 	while (contributorsList.firstChild){
 		contributorsList.removeChild(contributorsList.firstChild);
 	}

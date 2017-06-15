@@ -1,81 +1,195 @@
-<head>
-    <meta charset="utf-8">
-    <title>Dynamic Drawing Board</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen">
-    <link href="client\style.css" rel="stylesheet" type="text/css"/>
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
-    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+html, body{
+    margin:5px;
+    /*/color: aqua;/*/
+    background-color:coral;
+
+}
+
+li{
+  display: inline-block;
+}
+
+a{
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: underline;
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+input:hover{
+  cursor: -webkit-grab;
+}
+
+.hidden{
+	display: none;
+}
+
+#contributors-ul{
+	list-style: none;
+	padding-left: 0;
+}
+
+.contributor-li{
+	text-align: center;
+	width: 100%;
+}
+
+#contributors-title{
+	margin: 3px;
+	text-align: center;
+}
+
+#contributors{
+	font-family: inconsolata;
+	position: fixed;
+	top: 5px;
+	left: 5px;
+	max-width: 200px;
+	min-width: 10px;
+	background-color: white;
+	padding: 5px;
+	border: 2px solid;
+    border-radius: 2%;
+
+}
+
+#board{
+    border-radius: 2%;
+    border: 2px solid black;
+    background-color: #fff;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+}
 
 
-</head>
+#style-box{
+  margin: 20px;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+#style{
+  flex: 0 1 28%;
+  display: flex;
+  margin: 5px;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 2%;
+  background-color: #fff;
+}
+
+#site-title{
+	font-size: 36px;
+	padding: 10px 20px;
+	color: black;
+	font-family: inconsolata;
+  text-align: center;
+}
+
+#thicc-bar{
+  display: block;
+  padding: 5px;
+  font-family: inconsolata;
+  text-align: center;
+}
+
+#Thicc-text{
+  font-size: 18px;
+  color: black;
+}
+
+#thicc-button{
+  width: 80px;
+  height: 50px;
+  font-family: inconsolata;
+}
+
+#opacity-bar{
+  display: block;
+  padding: 5px;
+  font-family: inconsolata;
+  text-align: center;
+}
+
+#opacity-text{
+  font-size: 18px;
+  color: black;
+  padding: 20px 0px;
+}
+
+#color-sliders{
+  float: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#color-slider{
+  margin: 10px;
+}
+
+#color-elements{
+  float: right;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#color-button{
+  width: 80px;
+  height: 50px;
+  margin: 20px;
+  font-family: inconsolata;
+}
+
+#color-display{
+  display: block;
+  width: 80px;
+  height: 50px;
+  margin: 20px;
+  background-color: rgb(250, 250, 250);
+}
+
+/*/#range_bar:hover{
+  cursor: -webkit-grab;
+}/*/
+
+#foot{
+  display: block;
+  font-size: 18px;
+  font-family: inconsolata;
+  padding: 8px;
+  background-color: #bdc3cc;
+  border: 2px solid black;
+}
+
+#authors{
+  /*/display: inline-block;/*/
+  /*/float: left;/*/
+  padding: none;
+  text-align: center;
+
+}
 
 
 
+#author-item{
+  padding-left: 20px;
+}
 
-<body>
-  <header>
-    <h1 id="site-title">Etch-A-Sketch</h1>
-
-  </header>
-	<div id="contributors">
-		<h3 id="contributors-title">CURRENT<br>CONTRIBUTORS</h3>
-		<ul id="contributors-ul">
-		</ul>
-	</div>
-  <canvas id="board" width="1200" height="600"></canvas>
-
-  <div id="style-box">
-
-    <div id="style">
-
-      <div id="color-sliders">
-        <p id="Thicc-text">Want to change the color of your sketch? Use these tools </p>
-        <input id="color-slider" type="range" min="0" max="250" value="0" step="1" oninput="updateColor(value,g,b)" />
-        <input id="color-slider" type="range" min="0" max="250" value="0" step="1" oninput="updateColor(r,value,b)" />
-        <input id="color-slider" type="range" min="0" max="250" value="0" step="1" oninput="updateColor(r,g,value)" />
-      </div>
-      <div id="color-elements">
-        <div id="color-display"></div>
-        <button type="button" id="color-button">Change Color</button>
-      </div>
-    </div>
-
-    <div id="style">
-      <div id="opacity-bar">
-        <p id="opacity-text">Want to choose the rate at which your lines fade out? Use this slider</p>
-        <input type="range" min=".25" max="1" value="1" step=".05" onchange="changeOpacity(this.value)" />
-      </div>
-    </div>
-
-    <div id="style">
-     <div id="thicc-bar">
-      <p id="Thicc-text">Want to change your thickness? Click for random thickness</p>
-      <button type="button" id="thicc-button">Get Thicc!</button>
-     </div>
-     <div id="thicc-bar">
-       <p id="Thicc-text">Want to choose a thickness? Use this slider</p>
-       <div id="range_bar">
-         <input type="range" min="1" max="7" value="5" step="1" onchange="changeWidth(this.value)" />
-       </div>
-     </div>
-    </div>
-
-   </div>
-
-
-
-   <footer id="foot">
-     <ul id="authors">
-       <li><em><a href="https://github.com/OSU-CS290-Sp2017/final-project-sikihaja">This</a> is a final project for CS 290 at <a href="http://oregonstate.edu/">Oregon State University</a></em></li>
-       <li id="author-item">Authors: </li>
-       <li><a href="https://github.com/JKiff">Jason Kiff</a>,</li>
-       <li><a href="https://github.com/siekmanj">Jonah Siekmann</a>,</li>
-       <li><a href="https://github.com/Jaursch">Burton Jaursch</a>,</li>
-       <li><a href="https://github.com/THEAlecHayden23">Alec Hayden</a>, &</li>
-       <li><a href="https://github.com/jmanosu">Jared Tence</a></li>
-     </ul>
-     <p id="rob-email">Any issues found with this code should be sent to <a href="mailto:hessro@oregonstate.edu?Subject=Rob,%20these%20boys%20are%20whack" target="_top">hessro@oregonstate.edu</a></p>
-   </footer>
-</body>
-
-<script src="/index.js" charset="utf-8"></script>
+#rob-email{
+  text-align: center;
+}
