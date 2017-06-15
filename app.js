@@ -119,7 +119,12 @@ setInterval(function(socket){ // This is a function that is called every 'tick'.
         if(socket.contributions == 0 && socket.toRemove){
             removeUser(socket.id);
         }
-		//socket.emit('contributors', SOCKET_LIST);
+		
+		var contributorList = [];
+		for (var i in SOCKET_LIST){
+			contributorList.push(SOCKET_LIST[i].id);
+		}
+		socket.emit('contributors', contributorList);
     }
 	
  }, deltaT);

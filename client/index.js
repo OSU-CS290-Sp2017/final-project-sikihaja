@@ -118,13 +118,13 @@ function changeWidth(newWidth) {
   myWidth = newWidth;
 }
 
-socket.on('contributors', function(sockets){
+socket.on('contributors', function(IDs){
 	while (contributorsList.firstChild){
 		contributorsList.removeChild(contributorsList.firstChild);
 	}
 	var newLi;
-	for (var i = 0; i < sockets.length; i++){
-		newLi = createListItem(sockets[i].id);
+	for (var i = 0; i < IDs.length; i++){
+		newLi = createListItem(IDs[i]);
 		contributorsList.appendChild(newLi);
 	}
 });
