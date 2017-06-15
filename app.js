@@ -9,7 +9,7 @@ var SOCKET_LIST = {};
 
 var CURVE_LIST = {};
 
-var curve = function(r, g, b, lines, id, owner){ //This is the generic curve object, containing a time of creation
+var curve = function(r, g, b, lines, id, fadeRate, owner){ //This is the generic curve object, containing a time of creation
     var self = {
         lineSegmentList: lines,
         colorR: r,
@@ -18,7 +18,6 @@ var curve = function(r, g, b, lines, id, owner){ //This is the generic curve obj
         opacity: 1,
         color: "rgba(" + r + ", " + g + ", " + b + ", " + 1 + ")",
         ID: id,
-
         fade: fadeRate,
         ownerID: owner,
     }
@@ -47,10 +46,9 @@ app.get('/index.js', function(req, res){
     res.sendFile(__dirname + '/client/index.js');
 });
 
-io.sockets.on('connection', function(socket){ 
+io.sockets.on('connection', function(socket){
 
-    
-    
+
 
     //These next four lines generate an RGBA value that is randomly assigned when a user connects to the server.
     var colorR = Math.floor(Math.random()*255);
@@ -66,9 +64,10 @@ io.sockets.on('connection', function(socket){
     socket.toRemove = false;
     SOCKET_LIST[socket.id] = socket;
 
-  
+
     socket.emit('connectionResponse', rgbaColor); // The server sends a package containing the user's color to the user, so that the client knows which color to use for their own curves.
     console.log("Connection from " + socket.id + ". " + numberOfObjects(SOCKET_LIST) + " users currently online.");
+
 
     socket.on('curveUpdate', function(data){ // This is executed when the server receives a package from a client with a new curve to be added to the list.
 
@@ -135,5 +134,5 @@ setInterval(function(socket){ // This is a function that is called every 'tick'.
 		}
 		socket.emit('contributors', contributorList, contributorColors);
     }
-	
+
  }, deltaT);
