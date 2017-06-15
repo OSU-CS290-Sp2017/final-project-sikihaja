@@ -11,6 +11,7 @@ var myColor;
 var myWidth = 1;
 var contributorsList = document.getElementById('contributors-ul');
 var contributorsIsOpen = false;
+var currentContributors = [];
 
 var oldWidths = []; //should only hold the 3 last widths
 oldWidths.push(ctx.lineWidth);
@@ -118,24 +119,43 @@ function changeWidth(newWidth) {
   myWidth = newWidth;
 }
 
-socket.on('contributors', function(IDs){
+socket.on('contributors', function(IDs, Colors){
+	
+	//this is code for dynamically adding and removing contributors from the contributor list. The second loop does not work. maybe come back and work on it later?
+/* 	 for (var i = 0; i < IDs.length; i++){
+		if (!(currentContributors.includes(IDs[i]))){
+			var newLi = createListItem(IDs[i], Colors[i]);
+			contributorsList.appendChild(newLi);
+			currentContributors.push(IDs[i]);
+		}
+	}
+	for (var i = 0; i < currentContributors.length; i++){
+		if (!(IDs.includes(currentContributors[i]))){
+			console.log("removing child");
+			if (contributorsList.children[i]){
+			contributorsList.removeChild(contributorsList.children[i]);
+			}
+		}
+	}  */
+	
 	while (contributorsList.firstChild){
 		contributorsList.removeChild(contributorsList.firstChild);
 	}
 	var newLi;
 	for (var i = 0; i < IDs.length; i++){
-		newLi = createListItem(IDs[i]);
+		newLi = createListItem(IDs[i], Colors[i]);
 		contributorsList.appendChild(newLi);
 	}
 });
 
-var createListItem = function(socketID){
+var createListItem = function(socketID, userColor){
 	var newLi = document.createElement('li');
 	newLi.classList.add('contributor-li');
 	if (contributorsIsOpen){
 		newLi.classList.add('hidden');
 	}
 	newLi.textContent = socketID;
+	newLi.style.color = userColor;
 	return newLi;
 }
 
