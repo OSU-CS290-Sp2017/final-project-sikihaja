@@ -130,7 +130,6 @@ function changeOpacity(newOpacity) {
 
 socket.on('contributors', function(IDs, Colors){
 
-
 	//this is code for dynamically adding and removing contributors from the contributor list. The second loop does not work. maybe come back and work on it later?
 /* 	 for (var i = 0; i < IDs.length; i++){
 		if (!(currentContributors.includes(IDs[i]))){
